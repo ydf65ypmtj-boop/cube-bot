@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Cube Bot</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-name">Cube Bot</div>
+          <div class="brand-sub">AI エージェント（試作）</div>
+        </div>
+        <div class="side-note">
+          頼まれた仕事を、担当に振り分けて実行し、結果を確認して返すよ。
+          危ない操作（削除・送信・ログイン）は、実行前に必ず確認する。
+        </div>
+        <div class="side-status">
+          <span id="conn-dot" class="dot dot-unknown"></span>
+          <span id="conn-text">接続を確認中…</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="chat-scroll" id="chat-scroll">
+          <div class="chat-inner">
+            <ul class="msg-list" id="msg-list">
+              <li class="msg-ai">
+                <div class="answer">こんにちは、Cube Bot だよ。調べてほしいこと、作ってほしいもの、PC でやってほしいことを、そのまま書いて送ってね。モデルの起動が要る時は、最初の返事まで数分かかることがあるよ。</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="composer-wrap">
+          <div class="composer-inner">
+            <div class="composer">
+              <textarea id="input" rows="2" placeholder="Cube Bot への依頼を書く"></textarea>
+              <button id="send" type="button">送る</button>
+            </div>
+            <div class="composer-note">削除・送信・ログインは実行前に確認を求めるよ。確認なしには実行しない。</div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

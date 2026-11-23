@@ -177,6 +177,22 @@ inputEl.addEventListener("keydown", (ev) => {
   }
 });
 
+/* 入力欄の自動伸縮と提案チップ。どちらも見た目・入力補助だけで、
+   送信やポーリングの経路は変えない。 */
+function autoGrowInput() {
+  inputEl.style.height = "auto";
+  inputEl.style.height = Math.min(inputEl.scrollHeight, 168) + "px";
+}
+inputEl.addEventListener("input", autoGrowInput);
+sendEl.addEventListener("click", () => setTimeout(autoGrowInput, 0));
+document.querySelectorAll(".suggest-chip").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    inputEl.value = chip.dataset.q || chip.textContent;
+    autoGrowInput();
+    inputEl.focus();
+  });
+});
+
 (async () => {
   try {
     const r = await fetch(`${BOT_BASE_URL}/health`);

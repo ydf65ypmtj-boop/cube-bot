@@ -11,13 +11,21 @@
     <div class="app">
       <aside class="sidebar">
         <div class="brand">
-          <div class="brand-name">Cube Bot</div>
-          <div class="brand-sub">AI エージェント（試作）</div>
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+              <path d="M12 2.8 20 7.4v9.2l-8 4.6-8-4.6V7.4l8-4.6Z" />
+              <path d="M12 12 20 7.4M12 12v9.2M12 12 4 7.4" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <div class="brand-name">Cube Bot</div>
+            <div class="brand-sub">AI エージェント（試作）</div>
+          </div>
         </div>
-        <div class="side-note">
+        <p class="side-note">
           頼まれた仕事を、担当に振り分けて実行し、結果を確認して返すよ。
           危ない操作（削除・送信・ログイン）は、実行前に必ず確認する。
-        </div>
+        </p>
         <div class="side-status">
           <span id="conn-dot" class="dot dot-unknown"></span>
           <span id="conn-text">接続を確認中…</span>
@@ -32,6 +40,11 @@
                 <div class="answer">こんにちは、Cube Bot だよ。調べてほしいこと、作ってほしいもの、PC でやってほしいことを、そのまま書いて送ってね。モデルの起動が要る時は、最初の返事まで数分かかることがあるよ。</div>
               </li>
             </ul>
+            <div class="suggest" id="suggest">
+              <button type="button" class="suggest-chip" data-q="量子コンピュータの仕組みを調べて">量子コンピュータの仕組みを調べて</button>
+              <button type="button" class="suggest-chip" data-q="ToDoリストのアプリを作って">ToDoリストのアプリを作って</button>
+              <button type="button" class="suggest-chip" data-q="Cube Botにできることを教えて">Cube Botにできることを教えて</button>
+            </div>
           </div>
         </div>
 
@@ -39,7 +52,12 @@
           <div class="composer-inner">
             <div class="composer">
               <textarea id="input" rows="2" placeholder="Cube Bot への依頼を書く"></textarea>
-              <button id="send" type="button">送る</button>
+              <button id="send" type="button" aria-label="送信" title="送信">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 19V5" />
+                  <path d="m5 12 7-7 7 7" />
+                </svg>
+              </button>
             </div>
             <div class="composer-note">削除・送信・ログインは実行前に確認を求めるよ。確認なしには実行しない。</div>
           </div>

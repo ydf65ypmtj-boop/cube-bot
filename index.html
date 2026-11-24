@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
     <title>Cube Bot</title>
-    <link rel="stylesheet" href="style.css?v=20261123-2" />
+    <link rel="stylesheet" href="style.css?v=20261124-1" />
   </head>
   <body>
     <div class="app">
-      <aside class="sidebar">
+      <aside class="sidebar" id="sidebar">
         <div class="brand">
           <div class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
@@ -22,36 +22,92 @@
             <div class="brand-sub">AI エージェント（試作）</div>
           </div>
         </div>
+
+        <nav class="side-nav">
+          <button type="button" class="nav-item" id="new-chat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z" />
+            </svg>
+            <span>新しい会話</span>
+          </button>
+          <div class="nav-label">履歴</div>
+          <ul class="history-list" id="history-list">
+            <li class="history-empty" id="history-empty">まだ依頼がない</li>
+          </ul>
+        </nav>
+
         <p class="side-note">
           頼まれた仕事を、担当に振り分けて実行し、結果を確認して返すよ。
           危ない操作（削除・送信・ログイン）は、実行前に必ず確認する。
         </p>
-        <div class="side-status">
-          <span id="conn-dot" class="dot dot-unknown"></span>
-          <span id="conn-text">接続を確認中…</span>
+
+        <div class="side-bottom">
+          <label class="side-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.8-3.8" />
+            </svg>
+            <input id="history-search" type="search" placeholder="履歴を検索" autocomplete="off" />
+          </label>
+          <div class="side-status">
+            <span id="conn-dot" class="dot dot-unknown"></span>
+            <span id="conn-text">接続を確認中…</span>
+          </div>
         </div>
       </aside>
+      <div class="scrim" id="scrim" hidden></div>
 
       <main class="main">
+        <div class="char-stage">
+          <button type="button" class="menu-btn" id="menu-btn" aria-label="メニューを開く">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+          <div class="char-wrap char-idle" id="char-wrap">
+            <div class="char-avatar">
+              <img id="char-img" alt="Cube Bot のキャラクター" hidden />
+              <div class="char-fallback" id="char-fallback" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M12 2.8 20 7.4v9.2l-8 4.6-8-4.6V7.4l8-4.6Z" />
+                  <path d="M12 12 20 7.4M12 12v9.2M12 12 4 7.4" />
+                </svg>
+              </div>
+            </div>
+            <div class="char-chip" id="char-chip">待機中</div>
+          </div>
+        </div>
+
         <div class="chat-scroll" id="chat-scroll">
           <div class="chat-inner">
             <ul class="msg-list" id="msg-list">
               <li class="msg-ai">
-                <div class="answer">こんにちは、Cube Bot だよ。調べてほしいこと、作ってほしいもの、PC でやってほしいことを、そのまま書いて送ってね。モデルの起動が要る時は、最初の返事まで数分かかることがあるよ。</div>
+                <div class="bubble-ai">
+                  <div class="answer">こんにちは、Cube Bot だよ。調べてほしいこと、作ってほしいもの、PC でやってほしいことを、そのまま書いて送ってね。モデルの起動が要る時は、最初の返事まで数分かかることがあるよ。</div>
+                </div>
               </li>
             </ul>
-            <div class="suggest" id="suggest">
-              <button type="button" class="suggest-chip" data-q="量子コンピュータの仕組みを調べて">量子コンピュータの仕組みを調べて</button>
-              <button type="button" class="suggest-chip" data-q="ToDoリストのアプリを作って">ToDoリストのアプリを作って</button>
-              <button type="button" class="suggest-chip" data-q="Cube Botにできることを教えて">Cube Botにできることを教えて</button>
-            </div>
           </div>
         </div>
 
         <div class="composer-wrap">
           <div class="composer-inner">
+            <div class="plus-panel" id="plus-panel" hidden>
+              <div class="plus-panel-label">依頼の例</div>
+              <div class="suggest" id="suggest">
+                <button type="button" class="suggest-chip" data-q="量子コンピュータの仕組みを調べて">量子コンピュータの仕組みを調べて</button>
+                <button type="button" class="suggest-chip" data-q="ToDoリストのアプリを作って">ToDoリストのアプリを作って</button>
+                <button type="button" class="suggest-chip" data-q="Cube Botにできることを教えて">Cube Botにできることを教えて</button>
+              </div>
+            </div>
             <div class="composer">
-              <textarea id="input" rows="2" placeholder="Cube Bot への依頼を書く"></textarea>
+              <button id="plus-btn" type="button" aria-label="依頼の例を開く" title="依頼の例" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </button>
+              <textarea id="input" rows="1" placeholder="Cube Bot への依頼を書く"></textarea>
               <button id="send" type="button" aria-label="送信" title="送信">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M12 19V5" />
@@ -64,6 +120,7 @@
         </div>
       </main>
     </div>
-    <script src="script.js?v=20261123-2"></script>
+    <script src="char_frames.js?v=20261124-1"></script>
+    <script src="script.js?v=20261124-1"></script>
   </body>
 </html>
